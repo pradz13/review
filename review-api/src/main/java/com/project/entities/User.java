@@ -1,6 +1,5 @@
 package com.project.entities;
 
-import com.project.constants.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,8 +27,7 @@ public class User {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String roles;
 
     private boolean isEnabled;
 

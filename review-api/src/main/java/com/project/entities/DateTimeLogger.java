@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class DateTimeLogger {
 
     private LocalDateTime createdTp = LocalDateTime.now();

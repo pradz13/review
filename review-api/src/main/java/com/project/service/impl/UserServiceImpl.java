@@ -1,12 +1,15 @@
 package com.project.service.impl;
 
 import com.project.dto.UserDto;
+import com.project.entities.DateTimeLogger;
 import com.project.entities.User;
 import com.project.repository.UserRepository;
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +45,12 @@ public class UserServiceImpl implements UserService {
                 .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
+                .roles("ROLE_USER")
+                .isEnabled(true)
+                .dateTimeLogger(DateTimeLogger.builder()
+                        .createdTp(LocalDateTime.now())
+                        .lastUpdatedTp(LocalDateTime.now())
+                        .build())
                 .build();
 
     }
