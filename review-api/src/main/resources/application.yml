@@ -1,3 +1,13 @@
+# If no environment variable is passed then the default profile will be taken as development profile.
 spring:
   profiles:
     active: ${ENV:development}
+
+#Enabling the support for Actuator
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env
