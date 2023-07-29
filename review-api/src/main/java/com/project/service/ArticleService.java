@@ -3,6 +3,7 @@ package com.project.service;
 import com.project.constants.ArticleCategory;
 import com.project.constants.ArticleStatus;
 import com.project.dto.ArticleDto;
+import com.project.dto.PagedArticleDto;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface ArticleService {
 
     public List<ArticleDto> listArticlesForUser(Long userId);
 
-    public List<ArticleDto> listArticlesByCategory(ArticleCategory articleCategory, ArticleStatus articleStatus);
+    public PagedArticleDto listArticlesByCategory(ArticleCategory articleCategory, Integer pageNo);
 }

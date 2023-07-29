@@ -3,6 +3,7 @@ package com.project.service.impl;
 import com.project.constants.ArticleCategory;
 import com.project.constants.ArticleStatus;
 import com.project.dto.ArticleDto;
+import com.project.dto.PagedArticleDto;
 import com.project.entities.Article;
 import com.project.entities.DateTimeLogger;
 import com.project.entities.User;
@@ -10,6 +11,10 @@ import com.project.repository.ArticleRepository;
 import com.project.repository.UserRepository;
 import com.project.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         article  = articleRepository.save(article);
         user.getArticles().add(article);
         userRepository.save(user);
-        return convertToDto(article, userId);
+        return convertToDto(article);
     }
 
     @Override
@@ -60,8 +65,33 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> listArticlesByCategory(ArticleCategory articleCategory, ArticleStatus articleStatus) {
-        return null;
+    public PagedArticleDto listArticlesByCategory(ArticleCategory articleCategory, Integer pageNo) {
+        Sort sort = Sort.by("last_updated_tp");
+        Pageable pageable = PageRequest.of(pageNo, 10, sort); //TODO : To read page size from configuration
+        Page<Article> articlePages = articleRepository.findByArticleCategory(articleCategory, ArticleStatus.DRAFT, pageable);
+        List<Article> articles = articlePages.getContent();
+        int totalPage = articlePages.getTotalPages();
+        long totalElements = articlePages.getTotalElements();
+        int numberOfElements = articlePages.getNumberOfElements();
+        int size = articlePages.getSize();
+        boolean isLast = articlePages.isLast();
+        boolean isFirst = articlePages.isFirst();
+
+        List<ArticleDto> articleDtos = articles
+                .stream()
+                .map(this::convertToDto).toList();
+
+        return PagedArticleDto
+        .builder()
+        .articleDtos(articleDtos)
+        .totalPage(totalPage)
+        .totalElements(totalElements)
+        .numberOfElements(numberOfElements)
+        .size(size)
+        .isLast(isLast)
+        .isFirst(isFirst)
+        .build();
+
     }
 
     private Article convertToEntity(ArticleDto articleDto, User user) {
@@ -80,14 +110,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     }
 
-    private ArticleDto convertToDto(Article article, Long userId) {
+    private ArticleDto convertToDto(Article article) {
         return ArticleDto
                 .builder()
                 .id(article.getId())
                 .articleTitle(article.getArticleTitle())
                 .articleContent(article.getArticleContent())
                 .articleCategory(article.getArticleCategory())
-                .userId(userId)
+                .userId(article.getUser().getId())
                 .build();
 
     }

@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class DateTimeLogger {
-
+    @Builder.Default
     private LocalDateTime createdTp = LocalDateTime.now();
 
+    @Builder.Default
     private LocalDateTime lastUpdatedTp = LocalDateTime.now();
 
 }
