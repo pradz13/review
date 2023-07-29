@@ -10,13 +10,25 @@ function Category() {
       <Container>
         <Row>
           <Col sm>
-            <Content cardTitle={"Books"} cardContent={"Reviews of books"} />
+            <Content
+              cardTitle={"Books"}
+              cardContent={"Reviews of books"}
+              articleCategory={"BOOK_REVIEW"}
+            />
           </Col>
           <Col sm>
-            <Content cardTitle={"Movies"} cardContent={"Reviews of movies"} />
+            <Content
+              cardTitle={"Movies"}
+              cardContent={"Reviews of movies"}
+              articleCategory={"MOVIE_REVIEW"}
+            />
           </Col>
           <Col sm>
-            <Content cardTitle={"Shows"} cardContent={"Reviews of shows"} />
+            <Content
+              cardTitle={"Shows"}
+              cardContent={"Reviews of shows"}
+              articleCategory={"SHOW_REVIEW"}
+            />
           </Col>
         </Row>
       </Container>
